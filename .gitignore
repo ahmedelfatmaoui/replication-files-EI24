@@ -3,4 +3,7 @@
 .RData
 .Ruserdata
 .DS_Store
+./data/source_data/ipeds/enroll_majors.csv
+./data/source_data/ipeds/df_enroll_fall_race.csv
+./data/clean_data/enroll_resid.csv
 replication-files-EI24.Rproj
