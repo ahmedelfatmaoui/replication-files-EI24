@@ -1,46 +1,17 @@
-Overview
+### Overview
 
 The code in this replication package installs all necessary commands and runs all the analyses for the paper " From High School to Higher Education: Is recreational marijuana a consumption amenity for US college students?" by Ahmed El Fatmaoui. All analysis is done in R. A parent file(master.R) can be used to run all filesat once, calling other scripts to install and load required packages and create tables and figures. master.R script code saves tables in tables folder and figuresin figuresfolder. To replicate a single table or figure,run only the source named after that table or figure(e.g., run source("table\_A7.R") to replicate table A7). Replicators can expect the code to take about 1 hour to run. Mainly, replication of figure6 and table A9 takes a longer time to run as it computes the distance between each college location and the closest treated state border.
 
 <a name="_page0_x72.00_y269.75"></a>Figure 1: Layout of Replication Files
 
-replication-files-rml data![](Aspose.Words.7fae25e8-3101-4c58-9d0a-1d259a527706.001.png)
+replication-files-rml data![](diagram.png)
 
-clean\_data (cleaned/merged data)![](Aspose.Words.7fae25e8-3101-4c58-9d0a-1d259a527706.002.png)
-
-source\_data (raw data)
-
-controls![](Aspose.Words.7fae25e8-3101-4c58-9d0a-1d259a527706.003.png)
-
-ipeds others
-
-programs
-
-data\_cleaning (Extracts data from the sources and merges data)
-
-bls\_bea census\_pop![](Aspose.Words.7fae25e8-3101-4c58-9d0a-1d259a527706.004.png)
-
-completion\_cleaning enrollment\_cleaning google\_trend grad\_rates\_panel ipeds\_downloading marijuana\_price
-
-fig\_tab (creates tables and figures)
-
-master.R **(performs all data cleaning and analysis procedures)** figure\_#.R
-
-table\_#.R
-
-figures
-
-appendix
-
-main tables
-
-appendix main
 
 Figure[ 1 ](#_page0_x72.00_y269.75)illustrates the layout of the replication files. The data folder encompasses two primary subfolders. One folder (source\_data) houses the raw data obtained from [National Center for Education Statistics (2022a) ](#_page8_x47.09_y242.74)or other sources [(Bureau of Labor Statistics, 2021,](#_page8_x47.09_y143.10)[ Bureau of Economic Analysis,](#_page8_x47.09_y103.24) [2021,](#_page8_x47.09_y103.24) [U.S. Census Bureau,](#_page8_x47.09_y362.32) [2021).](#_page8_x47.09_y362.32) The other folder contains the processed data, specificallythe merged IPEDS data.
 
 Similarly, the programs folder, which comprises all the R scripts, includes a subfolder (data\_cleaning) responsible for downloading and cleaning the data. Another subfolder (fig\_tab) within the programs folder executes all analyses. The latter saves figuresand tables in their respective folders located within the last two major folders illustrated in Figure[ 1.](#_page0_x72.00_y269.75)
 
-Data Availability and Provenance Statements
+### Data Availability and Provenance Statements
 
 The paper uses mainly IPEDS data[ National Center for Education Statistics (2022a](#_page8_x47.09_y242.74)), and two other data from[ Bureau of Economic Analysis (2021)](#_page8_x47.09_y103.24)[^1][,](#_page0_x0.00_y792.00) [Bureau of Labor Statistics (2021),](#_page8_x47.09_y143.10) and [U.S. Census Bureau (2021).](#_page8_x47.09_y362.32) Other data used in appendix are from Google Trends and priceofweed.com. See section 3 and appendix B for detailed description of these data. I certify that the author(s) of the manuscript have legitimate access to and permission to use, redistribute, and publish the data used in this manuscript. All data are publicly available and have been deposited in the ICPSR repository of this paper.
 
@@ -184,9 +155,9 @@ Note: To locate the data on the provided link source, users should visit the Nat
 
 (NCES) [website.](https://nces.ed.gov/ipeds/datacenter/DataFiles.aspx?gotoReportId=7&fromIpeds=true&sid=ac68b949-876c-439b-abf0-e431b89449a2&rtid=1) Once there, they can navigate to the section containing data from the Integrated Postsecondary Education Data System (IPEDS) surveys. These surveys are identifiedby two key variables: the IPEDS Survey (Survey column) and the IPEDS Survey Title (Title column). Users can findthese identifierslisted in Table 1 under the ‘Data Source’ column for each IPEDS dataset. Note that data\_cleaning/ipeds\_downloading/IPEDS\_scraping.R downloads the raw IPEDS data from[ National Center for Education Statistics (2022a)](#_page8_x47.09_y242.74) and saves the data in data/source\_data/ipeds. In data\_cleaning/ipeds\_downloading/IPEDS\_scraping.R, there are functions called to construct panel data from each survey. For instance, the fall\_enroll\_race() function is utilized to extract yearly surveys for the firstdataset listed in the table, thereby forming fall enrollment panels. All the data is accessed as of June, 2023. The additional raw data, not listed in the provided table, includes: df\_completion.csv (refer to the Completion Dataset in the table for data sources), df\_enroll\_fall\_race.csv (refer to the firstFall Enrollment Dataset in the table for data sources), df\_adm\_act.csv (refer to the Admission and test scores Dataset in the table for data sources), grad-rate-raw.csv (refer to the Residence Dataset in the table for data sources), and resid\_first\_enrol.csv(refer to the Residence Dataset in the table for data sources). Further documentation is provided in the programs/data\_cleaning/ subfolders.
 
-Computational Requirements
+### Computational Requirements
 
-Software Requirements
+#### Software Requirements
 
 While the code should run in most computers as it is not computationally expensive, the code was run on a MacBook Pro with the following specifications:
 
@@ -202,8 +173,6 @@ The only software used is R. The code has been run with R version 4.2.2 (2022-10
 - bacondecomp • magrittr • geosphere
 - fwildclusterboot • did2s • rnaturalearthhires
 
-7
-
 - rmapshaper • readxl • magick
 - tigris • scales • ggpattern
 - sf • urbnmapr • grid
@@ -213,11 +182,11 @@ The only software used is R. The code has been run with R version 4.2.2 (2022-10
 
 Several packages (pacbacondecomp, gtrendsR, rnaturalearthhires, urbnthemes, urbnmapr) are loaded from GitHub using either the devtools or remotes package. The script install\_load\_packages.R is responsible for executing the package loading process from both CRAN and GitHub. For GitHub packages, users should expect to answer some prompt questions to load all the required packages.
 
-Memory and Runtime Requirements
+### Memory and Runtime Requirements
 
 Running master.R takes no more than one hour to run, but replicators can replicate each table and figureseparately by running only the source of the table or figureof interest. With the exception of spillover related figures,which require computation of distance between institutions locations and treated states borders, each figureor table should run in no more than 10 minutes.
 
-Description of Programs and Instructions to Replicators
+### Description of Programs and Instructions to Replicators
 
 The repository has four main folders: programs, figures,tables, and data. programs/fig\_tabfolder contains all the scripts needed to replicate all the tables and figures. in programs/fig\_tabfolder, master.R (orchestrator script) replicates all the tables an figures. The tables are saved in tables folder; figuresare saved in figuresfolder.
 
@@ -229,13 +198,13 @@ executing this will update all data files. It is worth mentioning that all data 
 
 Any minor discrepancies in the wild bootstrap p-values in the tables are solely attributed to the use of different seeds in older versions. Changing the seed in data-sources.R will lead to slightly different wild bootstrap p-values. Parallel computing and random number generation algorithms could also introduce slight variations in the wild bootstrap p-values. However, it is important to note that the results remain qualitatively the same despite these differences.
 
-List of Tables, Figures and Programs
+### List of Tables, Figures and Programs
 
 To facilitate the replication and comprehension of the code, each script in the "programs/fig\_tab"directory is named after the tables or figures it generates. Figures and tables are saved with numerical initials corresponding to their respective numbers in the paper. Figures are stored in either the "figures/main"or "figures/appendix"directory, while tables are saved in the "tables/main" or "tables/appendix" directory.
 
 For example, executing source(figure\_2.R)in master.R generates Figure 2, which is then saved as fig\_2\_a\_main\_did.eps and fig\_2\_b\_main\_did.eps in the figures/main directory. All source code files included in master.R adhere to this convention for creating tables and figures.
 
-References
+### References
 
 <a name="_page8_x47.09_y103.24"></a>Bureau of Economic Analysis (2021), ‘County level per capita income’, [https://www.bea.gov/data. ](https://www.bea.gov/data)Accessed:
 
