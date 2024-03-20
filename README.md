@@ -24,13 +24,6 @@ Table 1: Table 1: datasets Used in Paper
 |Dataset|Data files|Description and processing|DataLocation|Citation|Provided|
 | - | - | - | - | - | - |
 |IPEDS: Fall Enrollment|enroll\_main.csv, enroll\_all.csv, enroll\_vocational.csv|<p>Data source [(Link):](https://nces.ed.gov/ipeds/datacenter/DataFiles.aspx?gotoReportId=7&fromIpeds=true&sid=ac68b949-876c-439b-abf0-e431b89449a2&rtid=1)</p><p>- IPEDs Survey: Fall Enrollment</p><p>- IPEDs Title: Race/ethnicity, gender, attendance status, and level of student: Fall (2009-2019).</p><p>Data Processing</p><p>- data\_cleaning/ipeds\_downloading/IPEDS\_scraping.R downloads the data.</p><p>- data\_cleaning/enrollment\_cleaning/enroll\_cleaning.R merges the data together and saves for vocational (enroll\_vocational), academic (enroll\_main) and all institutions (enroll\_all).</p>|&emsp;data/clean\_data|&emsp;[National Center for Educa- tion Statistics (2022a)](#_page8_x47.09_y242.74)|&emsp;TRUE|
-
-Continued on next page
-
-2
-<a name="_page0_x0.00_y792.00"></a>Table 5 – continued from previous page
-|Dataset|Data files|Description and processing|DataLocation|Citation|Provided|
-| - | - | - | - | - | - |
 |IPEDS—|grad\_rates.csv|Data source [(Link):](https://nces.ed.gov/ipeds/datacenter/MasterVariableList.aspx?cFrom=ADDVARIABLE&sid=ac68b949-876c-439b-abf0-e431b89449a2&rtid=1)|data/clean\_data|[National Center](#_page8_x47.09_y302.53)|TRUE|
 |Graduation||- The link will navigate you to the dataset detailing graduation||[for Educa-](#_page8_x47.09_y302.53)||
 |rates||rates over 4, 5, and 6-year periods. Click ‘Continue’ as required||[tion Statistics](#_page8_x47.09_y302.53)||
@@ -70,10 +63,6 @@ Continued on next page
 |||Data Processing||||
 |||- data\_cleaning/ipeds\_downloading/IPEDS\_scraping.R downloads||||
 |||the data.||||
-Continued on next page
-
-|Dataset|Data files|Description and processing|DataLocation|Citation|Provided|
-| - | - | - | - | - | - |
 |IPEDS—|resid\_first\_enrol.csv|Data source [(Link):](https://nces.ed.gov/ipeds/datacenter/DataFiles.aspx?gotoReportId=7&fromIpeds=true&sid=ac68b949-876c-439b-abf0-e431b89449a2&rtid=1)|data/source\_data/ipeds|[National Center](#_page8_x47.09_y242.74)|TRUE|
 |Fall En-||||[for Educa-](#_page8_x47.09_y242.74)||
 |rollment,||- IPEDs Survey: Fall Enrollment||[tion Statistics](#_page8_x47.09_y242.74)||
@@ -108,10 +97,6 @@ Continued on next page
 |||Data Processing||||
 |||- data\_cleaning/ipeds\_downloading/IPEDS\_scraping.R downloads||||
 |||the data.||||
-Continued on next page
-
-|Dataset|Data files|Description and processing|DataLocation C|itation|Provided|
-| - | - | - | - | - | - |
 |IPEDS—|quality\_measures.csv|Data source [(Link):](https://nces.ed.gov/ipeds/datacenter/DataFiles.aspx?gotoReportId=7&fromIpeds=true&sid=ac68b949-876c-439b-abf0-e431b89449a2&rtid=1)|data/source\_data/ipeds|[National Center](#_page8_x47.09_y242.74)|TRUE|
 |Fall Enroll-||||[for Educa-](#_page8_x47.09_y242.74)||
 |ment||- IPEDs Survey: Fall Enrollment||[tion Statistics](#_page8_x47.09_y242.74)||
@@ -149,10 +134,9 @@ Continued on next page
 |||- /data\_cleaning/marijuana\_price/marijuana\_price\_scraping.R||||
 |||processes priceofweed.com data and retrieving the old data using||||
 |||archive.org/web.||||
+
+
 Note: To locate the data on the provided link source, users should visit the National Center for Education Statistics
-
-5
-
 (NCES) [website.](https://nces.ed.gov/ipeds/datacenter/DataFiles.aspx?gotoReportId=7&fromIpeds=true&sid=ac68b949-876c-439b-abf0-e431b89449a2&rtid=1) Once there, they can navigate to the section containing data from the Integrated Postsecondary Education Data System (IPEDS) surveys. These surveys are identifiedby two key variables: the IPEDS Survey (Survey column) and the IPEDS Survey Title (Title column). Users can findthese identifierslisted in Table 1 under the ‘Data Source’ column for each IPEDS dataset. Note that data\_cleaning/ipeds\_downloading/IPEDS\_scraping.R downloads the raw IPEDS data from[ National Center for Education Statistics (2022a)](#_page8_x47.09_y242.74) and saves the data in data/source\_data/ipeds. In data\_cleaning/ipeds\_downloading/IPEDS\_scraping.R, there are functions called to construct panel data from each survey. For instance, the fall\_enroll\_race() function is utilized to extract yearly surveys for the firstdataset listed in the table, thereby forming fall enrollment panels. All the data is accessed as of June, 2023. The additional raw data, not listed in the provided table, includes: df\_completion.csv (refer to the Completion Dataset in the table for data sources), df\_enroll\_fall\_race.csv (refer to the firstFall Enrollment Dataset in the table for data sources), df\_adm\_act.csv (refer to the Admission and test scores Dataset in the table for data sources), grad-rate-raw.csv (refer to the Residence Dataset in the table for data sources), and resid\_first\_enrol.csv(refer to the Residence Dataset in the table for data sources). Further documentation is provided in the programs/data\_cleaning/ subfolders.
 
 ### Computational Requirements
