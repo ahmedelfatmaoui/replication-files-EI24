@@ -7,3 +7,4 @@
 ./data/source_data/ipeds/df_enroll_fall_race.csv
 ./data/clean_data/enroll_resid.csv
 replication-files-EI24.Rproj
+./programs/data_cleaning/census_pop/.RData

@@ -1,10 +1,4 @@
 # Setting directory to script location 
-setwd(normalizePath(dirname(rstudioapi::getSourceEditorContext()$path),winslash = "\\"))
-
-# set seed for wild bootstrap 
-dqrng::dqset.seed(2352342)
-set.seed(23325)
-
 source("data-sources.R")
 
   state_df <- tibble(States=state.name, STABBR = state.abb)
@@ -74,10 +68,7 @@ source("data-sources.R")
 
     
     #-------------------------------------------------------
-    
-    num_treat <- df1$UNITID[df1$FIPS %in% unique(df1$FIPS[df1$adopt_law==1])] %>% unique %>% length
-    num_contr <- df1$UNITID[!df1$FIPS %in% unique(df1$FIPS[df1$adopt_law==1])] %>% unique %>% length 
-    num1 <- as.character(num_treat+num_contr) 
+    num1 <- as.character(df1$UNITID %>% unique %>% length )
     
     rows <- tribble(~"Coefficients", ~"Model 1",  ~"Model 2",~"Model 3",~"Model 4",~"Model 5",~"Model 6",
   

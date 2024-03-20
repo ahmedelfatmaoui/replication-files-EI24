@@ -2,12 +2,6 @@
 # treated border may take up to 30 minutes (adjust for parallel computing)
 
 # Setting directory to script location 
-setwd(normalizePath(dirname(rstudioapi::getSourceEditorContext()$path),winslash = "\\"))
-
-# set seed for wild bootstrap 
-dqrng::dqset.seed(2352342)
-set.seed(23325)
-
 source("data-sources.R")
   
   df_acd <- read_csv(main_data_path) #%>% select(-adopt_law) %>% dplyr::rename(adopt_law=adopt_store)

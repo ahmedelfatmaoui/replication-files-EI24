@@ -1,7 +1,6 @@
-# Setting directory to script location 
-setwd(normalizePath(dirname(rstudioapi::getSourceEditorContext()$path),winslash = "\\"))
 source("data-sources.R")
-source("install_load_packages.R")
+library(tidyverse)
+library(dplyr)
 #===============================================
 # Figure 1: Treated States Legalization Timeline
 #===============================================
@@ -62,16 +61,16 @@ df <- read_csv(main_data_path) %>% filter(STABBR %in% c(medical_control,tr_st))
 
 df$Treatment <- ifelse(df$STABBR%in%tr_st,"Ever RML (Treat, N = 6 States)","Ever MML (Control, N = 24 States)")
 
-df2 <- df %>% select(YEAR,Treatment,EFTOTLT) %>%
-  group_by(Treatment,YEAR) %>% 
-  summarise(avg_enrol=mean(EFTOTLT,na.rm = TRUE)) %>% 
-  unique %>% ungroup()
+df2 <- df %>% #select(YEAR,Treatment,EFTOTLT) %>%  
+       dplyr::group_by(Treatment,YEAR) %>% 
+        dplyr::summarise(avg_enrol=mean(EFTOTLT,na.rm = TRUE)) %>% 
+          unique %>% ungroup()
 
 df3 <- read_csv(main_data_path) %>%
   mutate(Treatment = ifelse(STABBR%in%tr_st,"RML States","Non-RML States")) %>% 
   select(YEAR,Treatment,EFTOTLT) %>% 
-  group_by(Treatment,YEAR) %>% 
-  summarise(avg_enrol=mean(EFTOTLT,na.rm = TRUE)) %>% 
+  dplyr::group_by(Treatment,YEAR) %>% 
+  dplyr::summarise(avg_enrol=mean(EFTOTLT,na.rm = TRUE)) %>% 
   unique %>% ungroup()
 
 ggplot(df2,aes(YEAR,avg_enrol,color=Treatment,linetype=Treatment))+
@@ -190,15 +189,14 @@ price_plot <- function(){
   # # looking at the distribution 
   marij_yr_st <- c(2012,2012,2015,2015,2015,2016,2017)
   
-  ggplot(data = PriceData1,aes(price))+
-    geom_histogram()+
-    facet_wrap(~quality_type)
+  # ggplot(data = PriceData1,aes(price))+
+  #   geom_histogram()+
+  #   facet_wrap(~quality_type)
   
   # aggregate price over quality, year, and state by taking the mean
-  
   PriceData_states <- aggregate(by=list(Year=PriceData1$Year, Jurisdictions=PriceData1$Jurisdictions),
                                 x= PriceData1[,2], FUN = mean, na.rm=TRUE, na.action=na.omit) %>% 
-    rename(Jurisdiction=Jurisdictions)
+    dplyr::rename(Jurisdiction=Jurisdictions)
   
   PriceData_states$Jurisdiction %>% unique()
   treated_states <- c("California","Washington","Nevada" ,"Oregon" , "Massachusetts",  "Colorado")
@@ -459,9 +457,44 @@ ggplot(df_legal_map %>% filter(!state_abbv%in%c("HI","DC","AK")) ) +
 
 ggsave("../../figures/appendix/fig_a7_med_contol_groups_apdx.png",height = 4,width = 7)
 
+#==============================================
+# Note: Figure A8 
+# execute figure A7 first
+#==============================================
 
-# Note: Figure A8 is created with arcgis, but it can easily be replicated with the above code
+df_legal_map %<>% mutate(`Legalization status: ` = case_when(
+                    df_legal_map$state_abbv %in% c("WA","OR","CO") ~ "RM States",
+                    df_legal_map$state_abbv %in% c("ID","MT","WY","UT","AZ","NM","TX","OK","KS","NE") ~ "Contiguous States Control",
+                    df_legal_map$state_abbv %in% c("CA","NV","MI","ME","MA") ~ "Excluded RM States",
+                  
+                    TRUE ~  "Noncontiguous State Control"
+                  ))
 
+
+ggplot(df_legal_map %>% filter(!state_abbv%in%c("HI","DC","AK")) ) +
+  geom_sf_pattern(aes(pattern =  `Legalization status: `),
+                  pattern_colour  = 'black',
+                  pattern_density = .3,
+                  pattern_spacing = 0.025 )+
+  geom_sf(mapping = aes( fill = `Legalization status: `),
+          color = "white", size = .01) +
+  
+  scale_fill_manual(values = alpha(c( "green","darkgray","gray98","chartreuse4"),.8))+
+  coord_sf(datum = NA)+
+  geom_sf_text(aes(label = state_abbv),size=1.5, check_overlap=TRUE,fontface = "bold")+
+  theme_classic()+
+  xlab(NULL)+ylab(NULL)+
+  theme(legend.position = "bottom",
+        #lengend.title = element_blank(),
+        plot.margin = margin(t = 0,  # Top margin
+                             r = 0,  # Right margin
+                             b = 0,  # Bottom margin
+                             l = 0  # Left margin
+        )
+        )
+
+
+ggsave("../../figures/appendix/fig_a8_cont_map.png",height = 4,width = 8)
 
 #==============================================
 # Figure A9: The Exclusion of Control Colleges

@@ -8,9 +8,6 @@ library(cpi)
 library(Inflation)
 
 
-setwd("~/Desktop/marijuana_enrollment/programs/ipeds_downloading")
-
-
 ## the following functions scrape the data from IPEDS survey
 ## data source:
 ## https://nces.ed.gov/ipeds/datacenter/DataFiles.aspx?gotoReportId=7&fromIpeds=true
@@ -103,7 +100,7 @@ institution_characteristics <- function(){
               
               
 
-              write_csv(Directory_information,"~/Desktop/marijuana_enrollment/data/source_data/ipeds/df_inst_char.csv")
+              write_csv(Directory_information,"../../data/source_data/ipeds/df_inst_char.csv")
 }
 
 ##Educational offerings, organization, admissions, services and athletic associations
@@ -173,7 +170,7 @@ institution_characteristics2 <- function(){
   
   
   
-  write_csv(Directory_information,"~/Desktop/marijuana_enrollment/data/source_data/ipeds/df_inst_char2.csv")
+  write_csv(Directory_information,"../../data/source_data/ipeds/df_inst_char2.csv")
 }
 
 # Student charges for academic year programs
@@ -244,11 +241,11 @@ institution_characteristics3 <- function(){
   
   
   
-  write_csv(Directory_information,"~/Desktop/marijuana_enrollment/data/source_data/ipeds/df_inst_char3.csv")
+  write_csv(Directory_information,"../../data/source_data/ipeds/df_inst_char3.csv")
 }
 
 
-###################
+###############################################################################
 ## Educational offerings, organization, applications, 
 ## admissions, enrollees, test scores, services and athletic associations
 ###############################################################################
@@ -341,7 +338,7 @@ admission <- function(){
           df_adm_act <- df
           rm(df1,df)
           
-          write_csv(df_adm_act,"~/Desktop/marijuana_enrollment/data/source_data/ipeds/df_adm_act.csv")
+          write_csv(df_adm_act,"../../data/source_data/ipeds/df_adm_act.csv")
 
 }
 
@@ -429,53 +426,7 @@ fall_enroll_race <- function(){
           
           df_enroll_fall_race <- df
           rm(df1,df)
-          write_csv(df_enroll_fall_race,"~/Desktop/marijuana_enrollment/data/source_data/ipeds/df_enroll_fall_race.csv")
-}
-
-
-#-------------------------------------------------------------------------
-## 12-month unduplicated headcount
-#-------------------------------------------------------------------------
-#https://nces.ed.gov/ipeds/datacenter/data/EFFY2015.zip
-#effy2015_rv.csv
-
-
-
-enrol_headcount <- function(){ 
-  
-  IPEDS_info3_dowld <- function(my_year){
-    
-    zip_file1 <- paste0("https://nces.ed.gov/ipeds/datacenter/data/EFFY",my_year, ".zip")
-    temp <- tempfile()
-    download.file(zip_file1,temp)
-    data <- read_csv(unz(temp, paste0("effy",my_year,"_rv.csv" )))
-    unlink(temp) 
-    names(data) <- toupper(names(data))
-    return(data %>% data_frame())
-  }
-  
-  
-  df <- IPEDS_info3_dowld(2009) %>% select(UNITID,EFFYLEV,LSTUDY,EFYTOTLT,EFYTOTLM,EFYTOTLW)
-  
-  df$YEAR <- 2009
-  
- 
-  ## download and bind the data
-  for (j in 2010:2020) {
-    print(j)
-    
-    df1 <- IPEDS_info3_dowld(j) %>% select(UNITID,EFFYLEV,LSTUDY,EFYTOTLT,EFYTOTLM,EFYTOTLW)
-    # print(colnames(df1))
-    
-    df1$YEAR <- j
-    
-    df <- df %>% rbind(df1)
-    
-  }     
-  
-  df_enroll_fall_race <- df
-  rm(df1,df)
-  write_csv(df_enroll_fall_race,"~/Desktop/marijuana_enrollment/data/source_data/ipeds/headcounts.csv")
+          write_csv(df_enroll_fall_race,"../../data/source_data/ipeds/df_enroll_fall_race.csv")
 }
 
 #-------------------------------------------------------------------------
@@ -542,9 +493,8 @@ quality_measures <- function(){
   
   df_enroll_fall_race <- df
   rm(df1,df)
-  write_csv(df_enroll_fall_race,"~/Desktop/marijuana_enrollment/data/source_data/ipeds/quality_measures.csv")
+  write_csv(df_enroll_fall_race,"../../data/source_data/ipeds/quality_measures.csv")
 }
-
 
 
 #-------------------------------------------------------------------------
@@ -598,7 +548,7 @@ finance_public_fasb <- function(){
   }     
   
   
-  write_csv(df,"~/Desktop/marijuana_enrollment/data/source_data/ipeds/finance_fasb.csv")
+  write_csv(df,"../../data/source_data/ipeds/finance_fasb.csv")
 }
 
 finance_public_gasp <- function(){ 
@@ -646,7 +596,7 @@ finance_public_gasp <- function(){
   }     
   
   
-  write_csv(df,"~/Desktop/marijuana_enrollment/data/source_data/ipeds/finance_gasp.csv")
+  write_csv(df,"../../data/source_data/ipeds/finance_gasp.csv")
 }
 
 finance_private <- function(){ 
@@ -696,7 +646,7 @@ finance_private <- function(){
   }     
   
   
-  write_csv(df,"~/Desktop/marijuana_enrollment/data/source_data/ipeds/finance_private.csv")
+  write_csv(df,"../../data/source_data/ipeds/finance_private.csv")
 }
 
 finance_concat <- function(fasb,gasp){
@@ -716,7 +666,7 @@ finance_concat <- function(fasb,gasp){
   
   finance_data <- fasb %>% rbind(gasp) 
   
-  write_csv(finance_data,"~/Desktop/marijuana_enrollment/data/source_data/ipeds/finance_public.csv")
+  write_csv(finance_data,"../../data/source_data/ipeds/finance_public.csv")
   
 }
 
@@ -740,7 +690,7 @@ finance_concat_all <- function(fasb,gasp,private){
     rbind(gasp %>% select(UNITID,YEAR,net_assets,tuition_fees,fin_sample) ) %>%
     rbind(private %>% select(UNITID,YEAR,net_assets,tuition_fees,fin_sample) )
   
-  write_csv(finance_data,"~/Desktop/marijuana_enrollment/data/source_data/ipeds/finance_all.csv")
+  write_csv(finance_data,"../../data/source_data/ipeds/finance_all.csv")
   
 }
 
@@ -790,7 +740,7 @@ residence_first_enrol <- function(){
   }     
   
   
-  write_csv(df,"~/Desktop/marijuana_enrollment/data/source_data/ipeds/resid_first_enrol.csv")
+  write_csv(df,"../../data/source_data/ipeds/resid_first_enrol.csv")
 }
 
 
@@ -850,7 +800,54 @@ enroll_majors <- function(){
   }     
   
   
-  write_csv(df,"~/Desktop/marijuana_enrollment/data/source_data/ipeds/enroll_majors.csv")
+  write_csv(df,"../../data/source_data/ipeds/enroll_majors.csv")
+}
+
+
+
+#-------------------------------------------------------------------------
+## 12-month unduplicated headcount
+#-------------------------------------------------------------------------
+#https://nces.ed.gov/ipeds/datacenter/data/EFFY2015.zip
+#effy2015_rv.csv
+
+
+
+enrol_headcount <- function(){ 
+  
+  IPEDS_info3_dowld <- function(my_year){
+    
+    zip_file1 <- paste0("https://nces.ed.gov/ipeds/datacenter/data/EFFY",my_year, ".zip")
+    temp <- tempfile()
+    download.file(zip_file1,temp)
+    data <- read_csv(unz(temp, paste0("effy",my_year,"_rv.csv" )))
+    unlink(temp) 
+    names(data) <- toupper(names(data))
+    return(data %>% data_frame())
+  }
+  
+  
+  df <- IPEDS_info3_dowld(2009) %>% select(UNITID,EFFYLEV,LSTUDY,EFYTOTLT,EFYTOTLM,EFYTOTLW)
+  
+  df$YEAR <- 2009
+  
+  
+  ## download and bind the data
+  for (j in 2010:2020) {
+    print(j)
+    
+    df1 <- IPEDS_info3_dowld(j) %>% select(UNITID,EFFYLEV,LSTUDY,EFYTOTLT,EFYTOTLM,EFYTOTLW)
+    # print(colnames(df1))
+    
+    df1$YEAR <- j
+    
+    df <- df %>% rbind(df1)
+    
+  }     
+  
+  df_enroll_fall_race <- df
+  rm(df1,df)
+  write_csv(df_enroll_fall_race,"../../data/source_data/ipeds/headcounts.csv")
 }
 
 
@@ -1005,7 +1002,7 @@ degree_completion <- function(){
   
   
   
-  modelsummary::datasummary_skim(df)
+  #modelsummary::datasummary_skim(df)
   
   #   AWLEVEL	3	Associate's degree
   # AWLEVEL	5	Bachelor's degree
@@ -1040,7 +1037,7 @@ degree_completion <- function(){
   df_agg$AWLEVEL <- ifelse(df_agg$AWLEVEL==3,"Associate's degree","Bachelor's degree")
   
   comp_data=rbind(df_agg,df_agg_all)
-  write_csv(comp_data,"~/Desktop/mr_paper/data/source_data/ipeds/df_completion.csv")
+  write_csv(comp_data,"../../data/source_data/ipeds/df_completion.csv")
   
   
 }

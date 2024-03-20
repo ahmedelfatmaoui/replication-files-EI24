@@ -9,17 +9,16 @@ library(dplyr)
 library(modelsummary)
 library(fixest)
 
-setwd("~/Desktop/mr_paper/programs/enrollment_cleaning")
 
-source("~/Desktop/mr_paper/programs/enrollment_cleaning/other_functions.R")
+source("../data_cleaning/enrollment_cleaning/other_functions.R")
 
-data_names <- c("~/Desktop/mr_paper/data/source_data/ipeds/df_inst_char.csv",
-                "~/Desktop/mr_paper/data/source_data/ipeds/df_inst_char2.csv",
-                "~/Desktop/mr_paper/data/source_data/ipeds/df_inst_char3.csv",
-                "~/Desktop/mr_paper/data/source_data/ipeds/finance_all.csv",
-                "~/Desktop/mr_paper/data/source_data/ipeds/quality_measures.csv",
-                "~/Desktop/mr_paper/data/source_data/ipeds/df_adm_act.csv",
-                "~/Desktop/mr_paper/data/clean_data/directory_info_gis.csv"
+data_names <- c("../../data/source_data/ipeds/df_inst_char.csv",
+                "../../data/source_data/ipeds/df_inst_char2.csv",
+                "../../data/source_data/ipeds/df_inst_char3.csv",
+                "../../data/source_data/ipeds/finance_all.csv",
+                "../../data/source_data/ipeds/quality_measures.csv",
+                "../../data/source_data/ipeds/df_adm_act.csv",
+                "../../data/clean_data/directory_info_gis.csv"
 )
 
 chr1 <- read.csv(data_names[1])
@@ -30,14 +29,9 @@ qual <- read.csv(data_names[5])
 adm <- read.csv(data_names[6]) 
 gis <- read.csv(data_names[7]) 
 
-
-
 # EFALEVEL	3	All students, Undergraduate, Degree/certificate-seeking total
 # EFALEVEL	4	All students, Undergraduate, Degree/certificate-seeking, First-time
-
-
-
-df <- read_csv("~/Desktop/mr_paper/data/source_data/ipeds/df_enroll_fall_race.csv") %>% 
+df <- read_csv("../../data/source_data/ipeds/df_enroll_fall_race.csv") %>% 
   select(UNITID,YEAR,EFALEVEL,LINE,SECTION,LSTUDY,EFTOTLT,EFTOTLM,EFTOTLW) %>% 
   left_join(chr1) %>% 
   left_join(chr2) %>% 
@@ -50,7 +44,6 @@ df <- read_csv("~/Desktop/mr_paper/data/source_data/ipeds/df_enroll_fall_race.cs
   filter(YEAR > 2008 & YEAR < 2020 & ## county data available starting from 2009; 2020 not revised in IPEDS+COVID
            FIPS < 57 &  ## exclude territories
            FIPS != 15 & ## exclude Hawaii
-           # LINE == 1 & ## Full-time, first-time, first-year, degree-seeking undergraduates
            EFALEVEL == 4 & ## All students, Undergraduate, Degree/certificate-seeking, First-time
            PSEFLAG == 1 & ##Active postsecondary institution
            ICLEVEL != 3 & ## Less than 2 years (below associate)
@@ -74,7 +67,6 @@ df <- read_csv("~/Desktop/mr_paper/data/source_data/ipeds/df_enroll_fall_race.cs
     HOSPITAL,
     HLOFFER,
     PEO1ISTR, #offers occup. 
-    # PEO2ISTR, # offers academic
     SLO5, #ROTC
     SLO3, #offers distance education
     CCBASIC, #Carnegie Classification : Basic
@@ -83,14 +75,11 @@ df <- read_csv("~/Desktop/mr_paper/data/source_data/ipeds/df_enroll_fall_race.cs
     
     APPLFEEU, #Undergraduate application fee
     ROOM,#Institution provide on-campus housing 
-    #ROOMAMT, #*** (48 % missing) ****
-    #BOARDAMT, #*** (51 % missing) ****
     TUITION2,#In-state average tuition for full-time undergraduates
     TUITION3, #Out-of-state average tuition for full-time undergraduates
     FEE2, #Out-of-state required fees for full-time undergraduates
     FEE3, #In-state required fees for full-time undergraduates
     CHG4AY3, ##Books and supplies 
-    ## CHG6AY3, ## On campus, other expenses *** (38 % missing) ****
     CHG8AY3, ##Off campus (not with family), other expenses 
     
     net_assets,  ## total yearly amounts
@@ -98,26 +87,8 @@ df <- read_csv("~/Desktop/mr_paper/data/source_data/ipeds/df_enroll_fall_race.cs
     fin_sample,
     
     RET_PCF, # Full-time retention rate
-    STUFACR,  # Student-to-faculty ratio
-    #ADMCON1, # requires Secondary school GPA  *** (23 % missing) ****
-    #ADMCON2, # requires Secondary school rank *** (23 % missing) ****
-    #ADMCON3, # requires Secondary school record *** (23 % missing) ****
-    #ADMCON4, # requires Completion of college-preparatory program *** (23 % missing) ****
-    ADMCON7, # requires Admission test scores *** (23 % missing) ****
-    
-    #APPLCN, #*** (44 % missing) ****
-    #APPLCNM,  #*** (44 % missing) ****
-    #APPLCNW,  #*** (44 % missing) ****
-    #ADMSSN, #*** (44 % missing) ****
-    #ADMSSNM,#*** (44 % missing) ****
-    #ADMSSNW,#*** (44 % missing) ****
-    
-    # ENRLT,  ##  full time and part time first time enroll.
-    # ENRLFTM, #*** (44 % missing) ****
-    # ENRLFTW, #*** (44 % missing) ****
-    # ENRLPT, #*** (49 % missing) ****
-    # ENRLPTM, #*** (49 % missing) ****
-    # ENRLPTW, #*** (49 % missing) ****
+    STUFACR,  
+    ADMCON7, 
     
     SATNUM, ## admission scores
     ACTNUM,
@@ -137,7 +108,7 @@ df <- read_csv("~/Desktop/mr_paper/data/source_data/ipeds/df_enroll_fall_race.cs
   ) 
 
 
-df_vct <- read_csv("~/Desktop/mr_paper/data/source_data/ipeds/df_enroll_fall_race.csv") %>% 
+df_vct <- read_csv("../../data/source_data/ipeds/df_enroll_fall_race.csv") %>% 
   select(UNITID,YEAR,EFALEVEL,LINE,SECTION,LSTUDY,EFTOTLT,EFTOTLM,EFTOTLW) %>% 
   filter(!UNITID %in% df$UNITID) %>% 
   left_join(chr1) %>% 
@@ -175,7 +146,6 @@ df_vct <- read_csv("~/Desktop/mr_paper/data/source_data/ipeds/df_enroll_fall_rac
     HOSPITAL,
     HLOFFER,
     PEO1ISTR, #offers occup. 
-    # PEO2ISTR, # offers academic
     SLO5, #ROTC
     SLO3, #offers distance education
     CCBASIC, #Carnegie Classification : Basic
@@ -184,14 +154,11 @@ df_vct <- read_csv("~/Desktop/mr_paper/data/source_data/ipeds/df_enroll_fall_rac
     
     APPLFEEU, #Undergraduate application fee
     ROOM,#Institution provide on-campus housing 
-    #ROOMAMT, #*** (48 % missing) ****
-    #BOARDAMT, #*** (51 % missing) ****
     TUITION2,#In-state average tuition for full-time undergraduates
     TUITION3, #Out-of-state average tuition for full-time undergraduates
     FEE2, #Out-of-state required fees for full-time undergraduates
     FEE3, #In-state required fees for full-time undergraduates
     CHG4AY3, ##Books and supplies 
-    ## CHG6AY3, ## On campus, other expenses *** (38 % missing) ****
     CHG8AY3, ##Off campus (not with family), other expenses 
     
     net_assets,  ## total yearly amounts
@@ -200,26 +167,8 @@ df_vct <- read_csv("~/Desktop/mr_paper/data/source_data/ipeds/df_enroll_fall_rac
     
     RET_PCF, # Full-time retention rate
     STUFACR,  # Student-to-faculty ratio
-    #ADMCON1, # requires Secondary school GPA  *** (23 % missing) ****
-    #ADMCON2, # requires Secondary school rank *** (23 % missing) ****
-    #ADMCON3, # requires Secondary school record *** (23 % missing) ****
-    #ADMCON4, # requires Completion of college-preparatory program *** (23 % missing) ****
     ADMCON7, # requires Admission test scores *** (23 % missing) ****
-    
-    #APPLCN, #*** (44 % missing) ****
-    #APPLCNM,  #*** (44 % missing) ****
-    #APPLCNW,  #*** (44 % missing) ****
-    #ADMSSN, #*** (44 % missing) ****
-    #ADMSSNM,#*** (44 % missing) ****
-    #ADMSSNW,#*** (44 % missing) ****
-    
-    # ENRLT,  ##  full time and part time first time enroll.
-    # ENRLFTM, #*** (44 % missing) ****
-    # ENRLFTW, #*** (44 % missing) ****
-    # ENRLPT, #*** (49 % missing) ****
-    # ENRLPTM, #*** (49 % missing) ****
-    # ENRLPTW, #*** (49 % missing) ****
-    
+
     SATNUM, ## admission scores
     ACTNUM,
     SATPCT,
@@ -236,51 +185,30 @@ df_vct <- read_csv("~/Desktop/mr_paper/data/source_data/ipeds/df_enroll_fall_rac
     ACTMT75
     
   ) 
-#rm(adm,chr1, chr2,chr3,fin,qual)
-########################################
 
 
 enroll_data <- df 
-
-
-
-
 
 for (i in 7:ncol(enroll_data)) {
   enroll_data[[i]] <- enroll_data[[i]] %>% as.numeric
 }
 
-
-#************************************************
-## impute SAT and ACT
-# assign zeto to the test test score if 
-# the institution doesn't require any test for admission
-
 score_col <- enroll_data %>% select(c(starts_with("SAT"),starts_with("ACT"))) %>% names
 
 for (i in score_col) {
-  print(paste0(i," Before imputation"))
-  # enroll_data[[i]] %>% summary %>% print
+  #print(paste0(i," Before imputation"))
   
   enroll_data[[i]][
     !enroll_data[["ADMCON7"]] %in% c(1,2) & ## no score requirement
       is.na(enroll_data[[i]]) ## score missing
   ] <- 0
   
-  print(paste0(i," After imputation"))     
-  enroll_data[[i]] %>% summary %>% print
+  # print(paste0(i," After imputation"))     
+  # enroll_data[[i]] %>% summary %>% print
 }
 
-enroll_data <- enroll_data %>%  marij_legal_dummy() %>% 
-  select(-ADMCON7) 
+enroll_data <- enroll_data %>%  marij_legal_dummy() %>%  select(-ADMCON7) 
 
-# datasummary_skim(enroll_data[,1:49])
-# datasummary_skim(enroll_data[,50:53])
-
-#enroll_data$adopt_MM_law %>% summary
-
-# Enroll_char_adm1=enroll_data
-#************************************************
 enroll_data$UNITID.f <- enroll_data$UNITID %>% as.factor
 enroll_data$YEAR.f <- enroll_data$YEAR %>% as.factor
 enroll_data$COUNTYCD.f <- enroll_data$COUNTYCD %>% as.factor
@@ -296,28 +224,13 @@ enroll_data$STATE.f <- enroll_data$FIPS %>% as.factor
 
 enroll_data$ROTC <-  ifelse(enroll_data$SLO5 == 1,1,0) ## ROTC
 enroll_data$DIST <-  ifelse(enroll_data$SLO3 == 1,1,0) ## distance
-#***********************************************
 
-# CRIME DATA >>>>>CRIME DATA >>>>>CRIME DATA >>>>>CRIME DATA >>>>>
-## don't use due too many missing Obs.
-# st1 <- data_frame(STABBR=state.abb %>% toupper,
-#                   STATENAME=state.name %>% toupper)
-# ## UCR county crime 
-# ucr_data <- read_csv( "~/Desktop/mr_paper/data/source_data/controls/ucr_crime_data.csv" )%>%
-#   left_join(st1) %>% filter(YEAR>2008)
-# 
-# # ucr_test <- ucr_data %>% select(YEAR,STABBR,COUNTYCD,violent_crime) 
-# # ucr_test[duplicated(ucr_test),]
-# 
-# enroll_data <- enroll_data %>% left_join(ucr_data )
-# CRIME DATA >>>>>CRIME DATA >>>>>CRIME DATA >>>>>CRIME DATA >>>>>
+#---------------
+### Census POP 
+#---------------
+enroll_data <- enroll_data %>% left_join(read_csv("../../data/source_data/controls/pop/census_agesex.csv"))
 
-
-#-----------------------------------------------------------------------------------------
-### Census POP ### Census POP ### Census POP ### Census POP ### Census POP ### Census POP 
-enroll_data <- enroll_data %>% left_join(read_csv("~/Desktop/mr_paper/data/source_data/controls/census_pop/census_agesex.csv"))
-
-enroll_data <- enroll_data %>% left_join(read_csv("~/Desktop/mr_paper/data/source_data/controls/census_pop/census_migration.csv"))
+enroll_data <- enroll_data %>% left_join(read_csv("../../data/source_data/controls/pop/census_migration.csv"))
 
 enroll_data$DEATHS <- enroll_data$DEATHS/100000
 enroll_data$BIRTHS <- enroll_data$BIRTHS/100000
@@ -332,29 +245,20 @@ enroll_data$INTERNATIONALMIG <- enroll_data$INTERNATIONALMIG + abs(min(enroll_da
 enroll_data$NPOPCHG_ <- enroll_data$NPOPCHG_ + abs(min(enroll_data$NPOPCHG_,na.rm = T)-1)
 enroll_data$net_assets <- enroll_data$net_assets + abs(min(enroll_data$net_assets,na.rm = T)-1)
 
-### Census POP ### Census POP ### Census POP ### Census POP ### Census POP ### Census POP 
-#-----------------------------------------------------------------------------------------
+#-----------------
+### BLS and BEA
+#-----------------
 
-
-
-#-----------------------------------------------------------------------------------------
-### BLS and BEA ###  BLS and BEA ###  BLS and BEA ###  BLS and BEA ###  BLS and BEA ###  
-bls_bea <- read_csv("~/Desktop/mr_paper/data/source_data/controls/bls_bea_data.csv") %>% 
+bls_bea <- read_csv("../../data/source_data/controls/bls_bea_data.csv") %>% 
   dplyr::rename(YEAR=TimePeriod,COUNTYCD=GeoFips)
 
 bls_bea$YEAR <- bls_bea$YEAR %>% as.numeric
 bls_bea$COUNTYCD <- bls_bea$COUNTYCD %>% as.numeric
 
-
 enroll_data <- enroll_data %>% left_join(bls_bea)
-
 enroll_data$gdp_real12 <- enroll_data$gdp_real12/enroll_data$population
-### ### BLS and BEA ###  BLS and BEA ###  BLS and BEA ###  BLS and BEA ###  BLS and BEA ###  
-#-----------------------------------------------------------------------------------------
 
-
-
-# DUMMIES # DUMMIES # DUMMIES # DUMMIES # DUMMIES # DUMMIES # DUMMIES 
+# DUMMIES 
 add_dummies <- function(fin_df){
   fin_df$is_large_inst <- ifelse(fin_df$INSTSIZE %in% c(5) ,1,0) ## institutions with at least 20,000 aggregate enroll.
   fin_df$is_midsize_inst <- ifelse(fin_df$INSTSIZE %in% c(4) ,1,0) ## institutions with at least 10K to 20,000 aggregate enroll.
@@ -366,9 +270,6 @@ add_dummies <- function(fin_df){
   return(fin_df)
 }
 enroll_data <- enroll_data %>% add_dummies
-# DUMMIES # DUMMIES # DUMMIES # DUMMIES # DUMMIES # DUMMIES # DUMMIES 
-
-#modelsummary::datasummary_skim(enroll_data[,1:50])
 
 log_list <- c("EFTOTLW", "EFTOTLM", "EFTOTLT",
               "per_capita_income", "unemply_rate",
@@ -383,9 +284,7 @@ for (i in log_list) {
   enroll_data[[paste0("ln_",i)]] <- enroll_data[[paste0("ln_",i)]] %>% log
 }
 
-
-
-write_csv(enroll_data,"~/Desktop/mr_paper/data/clean_data/enroll_robust_controls.csv")
+write_csv(enroll_data,"../../data/clean_data/enroll_robust_controls.csv")
 
 df_main <- enroll_data %>% select(UNITID,STABBR,YEAR,FIPS,COUNTYCD,CONTROL,
                                   OBEREG,ICLEVEL,HLOFFER,MEDICAL,CCBASIC,CCIPUG,CARNEGIE,
@@ -409,57 +308,30 @@ df_main <- enroll_data %>% select(UNITID,STABBR,YEAR,FIPS,COUNTYCD,CONTROL,
                                   
                                   )
 
-
-
-write_csv(df_main, "~/Desktop/mr_paper/data/clean_data/enroll_main.csv")
-
-#-----------------------------------------------------------------------------------------
-
-#-----------------------------------------------------------------------------------------
-#-----------------------------------------------------------------------------------------
-## turn this into a function!
+write_csv(df_main, "../../data/clean_data/enroll_main.csv")
 
 enroll_data <- df_vct 
-
-
-
-
 
 for (i in 7:ncol(enroll_data)) {
   enroll_data[[i]] <- enroll_data[[i]] %>% as.numeric
 }
 
-
-#************************************************
-## impute SAT and ACT
-# assign zeto to the test test score if 
-# the institution doesn't require any test for admission
-
 score_col <- enroll_data %>% select(c(starts_with("SAT"),starts_with("ACT"))) %>% names
 
 for (i in score_col) {
-  print(paste0(i," Before imputation"))
-  # enroll_data[[i]] %>% summary %>% print
+  #print(paste0(i," Before imputation"))
   
   enroll_data[[i]][
     !enroll_data[["ADMCON7"]] %in% c(1,2) & ## no score requirement
       is.na(enroll_data[[i]]) ## score missing
   ] <- 0
   
-  print(paste0(i," After imputation"))     
-  enroll_data[[i]] %>% summary %>% print
+ # print(paste0(i," After imputation"))     
+ # enroll_data[[i]] %>% summary %>% print
 }
 
-enroll_data <- enroll_data %>%  marij_legal_dummy() %>% 
-  select(-ADMCON7) 
+enroll_data <- enroll_data %>%  marij_legal_dummy() %>% select(-ADMCON7) 
 
-# datasummary_skim(enroll_data[,1:49])
-# datasummary_skim(enroll_data[,50:53])
-
-#enroll_data$adopt_MM_law %>% summary
-
-# Enroll_char_adm1=enroll_data
-#************************************************
 enroll_data$UNITID.f <- enroll_data$UNITID %>% as.factor
 enroll_data$YEAR.f <- enroll_data$YEAR %>% as.factor
 enroll_data$COUNTYCD.f <- enroll_data$COUNTYCD %>% as.factor
@@ -475,28 +347,15 @@ enroll_data$STATE.f <- enroll_data$FIPS %>% as.factor
 
 enroll_data$ROTC <-  ifelse(enroll_data$SLO5 == 1,1,0) ## ROTC
 enroll_data$DIST <-  ifelse(enroll_data$SLO3 == 1,1,0) ## distance
-#***********************************************
 
-# CRIME DATA >>>>>CRIME DATA >>>>>CRIME DATA >>>>>CRIME DATA >>>>>
+st1 <- data_frame(STABBR=state.abb %>% toupper, STATENAME=state.name %>% toupper)
 
-st1 <- data_frame(STABBR=state.abb %>% toupper,
-                  STATENAME=state.name %>% toupper)
-## UCR county crime 
-ucr_data <- read_csv( "~/Desktop/mr_paper/data/source_data/controls/ucr_crime_data.csv" )%>%
-  left_join(st1) %>% filter(YEAR>2008)
+#----------------
+### Census POP
+#----------------
+enroll_data <- enroll_data %>% left_join(read_csv("../../data/source_data/controls/pop/census_agesex.csv"))
 
-# ucr_test <- ucr_data %>% select(YEAR,STABBR,COUNTYCD,violent_crime) 
-# ucr_test[duplicated(ucr_test),]
-
-enroll_data <- enroll_data %>% left_join(ucr_data )
-# CRIME DATA >>>>>CRIME DATA >>>>>CRIME DATA >>>>>CRIME DATA >>>>>
-
-
-#-----------------------------------------------------------------------------------------
-### Census POP ### Census POP ### Census POP ### Census POP ### Census POP ### Census POP 
-enroll_data <- enroll_data %>% left_join(read_csv("~/Desktop/mr_paper/data/source_data/controls/census_pop/census_agesex.csv"))
-
-enroll_data <- enroll_data %>% left_join(read_csv("~/Desktop/mr_paper/data/source_data/controls/census_pop/census_migration.csv"))
+enroll_data <- enroll_data %>% left_join(read_csv("../../data/source_data/controls/pop/census_migration.csv"))
 
 enroll_data$DEATHS <- enroll_data$DEATHS/100000
 enroll_data$BIRTHS <- enroll_data$BIRTHS/100000
@@ -511,34 +370,18 @@ enroll_data$INTERNATIONALMIG <- enroll_data$INTERNATIONALMIG + abs(min(enroll_da
 enroll_data$NPOPCHG_ <- enroll_data$NPOPCHG_ + abs(min(enroll_data$NPOPCHG_,na.rm = T)-1)
 enroll_data$net_assets <- enroll_data$net_assets + abs(min(enroll_data$net_assets,na.rm = T)-1)
 
-### Census POP ### Census POP ### Census POP ### Census POP ### Census POP ### Census POP 
-#-----------------------------------------------------------------------------------------
-
-
-
-#-----------------------------------------------------------------------------------------
-### BLS and BEA ###  BLS and BEA ###  BLS and BEA ###  BLS and BEA ###  BLS and BEA ###  
-bls_bea <- read_csv("~/Desktop/mr_paper/data/source_data/controls/bls_bea_data.csv") %>% 
+#----------------
+### BLS and BEA
+#----------------
+bls_bea <- read_csv("../../data/source_data/controls/bls_bea_data.csv") %>% 
   dplyr::rename(YEAR=TimePeriod,COUNTYCD=GeoFips)
 
 bls_bea$YEAR <- bls_bea$YEAR %>% as.numeric
 bls_bea$COUNTYCD <- bls_bea$COUNTYCD %>% as.numeric
 
-
 enroll_data <- enroll_data %>% left_join(bls_bea)
-
 enroll_data$gdp_real12 <- enroll_data$gdp_real12/enroll_data$population
-### ### BLS and BEA ###  BLS and BEA ###  BLS and BEA ###  BLS and BEA ###  BLS and BEA ###  
-#-----------------------------------------------------------------------------------------
-
-
-
-# DUMMIES # DUMMIES # DUMMIES # DUMMIES # DUMMIES # DUMMIES # DUMMIES 
-
 enroll_data <- enroll_data %>% add_dummies
-# DUMMIES # DUMMIES # DUMMIES # DUMMIES # DUMMIES # DUMMIES # DUMMIES 
-
-#modelsummary::datasummary_skim(enroll_data[,1:50])
 
 log_list <- c("EFTOTLW", "EFTOTLM", "EFTOTLT",
               "per_capita_income", "unemply_rate",
@@ -552,9 +395,6 @@ for (i in log_list) {
   enroll_data[[paste0("ln_",i)]][enroll_data[[paste0("ln_",i)]]==0] <- 1
   enroll_data[[paste0("ln_",i)]] <- enroll_data[[paste0("ln_",i)]] %>% log
 }
-
-
-
 
 
 df_vct2 <- enroll_data %>% select(UNITID,STABBR,YEAR,FIPS,COUNTYCD,CONTROL,
@@ -579,11 +419,11 @@ df_vct2 <- enroll_data %>% select(UNITID,STABBR,YEAR,FIPS,COUNTYCD,CONTROL,
 
 
 
-write_csv(df_vct2, "~/Desktop/mr_paper/data/clean_data/enroll_vocational.csv")
+write_csv(df_vct2, "../../data/clean_data/enroll_vocational.csv")
 
-df_all <- rbind(df_main,df_vct2)
+df_all <- rbind(df_main %>% select(names(df_vct2)),df_vct2)
 
-write_csv(df_all,"~/Desktop/mr_paper/data/clean_data/enroll_all.csv" )
+write_csv(df_all,"../../data/clean_data/enroll_all.csv" )
 
 #-----------------------------------------------------------------------------------------
 ## welfare sample

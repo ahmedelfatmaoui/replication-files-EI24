@@ -6,7 +6,7 @@ library(zoo)
 # Setting directory to script location 
 setwd(normalizePath(dirname(rstudioapi::getSourceEditorContext()$path),winslash = "\\"))
 
-df <- read_csv("../../../data/source_data/ipeds/grad-rate-raw.csv") %>% .[,-87] %>% 
+df <- read_csv("../../data/source_data/ipeds/grad-rate-raw.csv") %>% .[,-87] %>% 
       pivot_longer(cols = -c(1,2),names_to = "grad_rate_type",values_to = "grad_rate")
 
 #df$grad_rate_type %>% unique %>% view
@@ -48,7 +48,7 @@ df %<>% select(UNITID=UnitID,inst_nm11=`Institution Name`,YEAR=years,grad_rate_t
 
 
 # testing
-enrol_data <- read_csv("../../../data/clean_data/enroll_main.csv") %>% left_join(df)
+enrol_data <- read_csv("../../data/clean_data/enroll_main.csv") %>% left_join(df)
 
 modelsummary::datasummary_skim(enrol_data %>% select(names(df)[-c(1:2)]))
 
@@ -123,5 +123,5 @@ df <- df %>%
   ) %>%
   ungroup()
 
-write_csv(df,"../../../data/clean_data/grad_rates.csv")
+write_csv(df,"../../data/clean_data/grad_rates.csv")
 

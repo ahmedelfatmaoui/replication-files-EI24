@@ -1,15 +1,15 @@
 
 # List of required libraries
 libraries <- c(
-  "tidyverse", "fixest", "modelsummary", "AER", "ivreg", "bacondecomp",
+  "tidyverse", "fixest","plyr","Hmisc", "cpi","Inflation","modelsummary", "AER", "ivreg", 
   "lmtest", "multiwayvcov", "plm", "lmtest", "sandwich", "latex2exp",
-  "haven", "ggplot2", "dplyr", "tidyverse", "gt", "magrittr", "fastDummies",
+  "haven", "ggplot2", "gt", "magrittr", "fastDummies",
   "bacondecomp", "did2s", "rvest", "lubridate", "nycflights13", "xml2",
-  "dplyr", "kableExtra", "estimatr", "geosphere", "rnaturalearthhires",
+  "dplyr", "kableExtra", "estimatr", "geosphere",
   "rmapshaper", "tigris", "sf", "ggplot2", "ggspatial", "rnaturalearth",
-  "matrixStats", "readxl", "scales", "urbnmapr", "urbnthemes", "devtools",
-  "maps", "tigris", "sf", "magick", "ggpattern", "grid", "Synth",
-  "synthdid", "groupdata2", "tikzDevice", "gtrendsR",
+  "matrixStats", "readxl", "scales", "devtools",
+  "maps", "tigris", "sf", "magick", "ggpattern", "grid",
+  "groupdata2", "tikzDevice", "remotes",
   "data.table","fwildclusterboot","educationdata"
 )
 
@@ -23,6 +23,29 @@ install_if_missing <- function(pkg) {
 # Loop through the list and install missing packages
 invisible(lapply(libraries, install_if_missing))
 
+# Load the devtools package
+library(devtools)
+library(remotes)
+
+
+
+# these are not on CRAN but rather on GitHub
+
+# load from github
+# https://github.com/evanjflack/bacondecomp
+devtools::install_github("evanjflack/bacondecomp")
+
+# https://github.com/PMassicotte/gtrendsR
+devtools::install_github("PMassicotte/gtrendsR")
+
+# Install rnaturalearthhires from GitHub
+install_github("ropensci/rnaturalearthhires")
+
+# Install urbnthemes from GitHub
+remotes::install_github("UrbanInstitute/urbnthemes", build_vignettes = TRUE)
+
+# Install urbnmapr from GitHub
+remotes::install_github("UrbanInstitute/urbnmapr")
 
 # Load all the libraries
 library(tidyverse)
@@ -65,20 +88,22 @@ library(readxl)
 library(scales)
 library(urbnmapr)
 library(urbnthemes)
-library(devtools)
 library(maps)
 library(tigris)
 library(fwildclusterboot)
 library(magick)
 library(ggpattern)
 library(grid)
-library(Synth)
-library(synthdid)
 library(groupdata2)
 library(tikzDevice)
 library(gtrendsR)
 library(data.table)
 library(educationdata)
+library(rvest)
+library(tidyverse)
+library(plyr)
+library(Hmisc)
+library(cpi)
+library(Inflation)
 
-## NOTE: you may need to get the most updated bacondecomp from github
 

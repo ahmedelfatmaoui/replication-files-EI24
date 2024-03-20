@@ -1,12 +1,5 @@
-# Setting directory to script location 
-setwd(normalizePath(dirname(rstudioapi::getSourceEditorContext()$path),winslash = "\\"))
-
-# set seed for wild bootstrap 
-dqrng::dqset.seed(2352342)
-set.seed(23325)
-
 source("data-sources.R")
-  
+
   df <- read_csv(main_data_path)
   
   resid_df <- read_csv(out_enrol_path) %>% filter( YEAR %in% seq(2008,2018,2)) 

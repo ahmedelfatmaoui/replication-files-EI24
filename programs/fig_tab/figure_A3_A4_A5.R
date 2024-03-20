@@ -1,8 +1,5 @@
-
-# Setting directory to script location 
-setwd(normalizePath(dirname(rstudioapi::getSourceEditorContext()$path),winslash = "\\"))
-
 source("data-sources.R")
+
 library(fixest)
 #==========================================================
 # Figure A3: Event Study Graph of RML Treatment 

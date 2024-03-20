@@ -1,9 +1,4 @@
-
-# Setting directory to script location 
-setwd(normalizePath(dirname(rstudioapi::getSourceEditorContext()$path),winslash = "\\"))
-
 source("data-sources.R")
-
 
 #==============================================
 # Figure 5: Goodman-Bacon Decomposition

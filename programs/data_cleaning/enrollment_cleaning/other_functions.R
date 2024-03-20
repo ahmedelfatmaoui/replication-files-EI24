@@ -27,7 +27,7 @@
 marij_legal_dummy <- function(Enroll_char_adm1){
   
   # source: https://www.carnevaleassociates.com/our-work/status-of-state-marijuana-legalization.html
-  medical_info <- read_csv("~/Desktop/marijuana_enrollment/data/source_data/others/medical_marij/medical.csv",col_names=F)
+  medical_info <- read_csv("../../data/source_data/others/medical_marij/medical.csv",col_names=F)
   medical_info$med_year <- medical_info$X1 %>% parse_number()
   medical_info$state_name <- medical_info$X1 %>% substr(.,1, str_count(medical_info$X1)-6) %>% toupper() %>% trimws()
   
@@ -155,13 +155,13 @@ other_filtration <- function(df){
 # returns a data frame 
 indepent_variables <- function(){
 
-data_names <- c("~/Desktop/mariij_project/data/cleaned_data/raw_data/directory_info.csv",
-                "~/Desktop/mariij_project/data/cleaned_data/raw_data/adm_act.csv",
-                "~/Desktop/mariij_project/data/cleaned_data/raw_data/finance_all.csv",
-                "~/Desktop/mariij_project/data/cleaned_data/raw_data/bls_bea_data.csv"
+data_names <- c("../../data/cleaned_data/raw_data/directory_info.csv",
+                "../../data/cleaned_data/raw_data/adm_act.csv",
+                "../../data/cleaned_data/raw_data/finance_all.csv",
+                "../../data/cleaned_data/raw_data/bls_bea_data.csv"
 )
 
-gis_dist <- read_csv("~/Desktop/mariij_project/data/cleaned_data/raw_data/directory_info_gis.csv")
+gis_dist <- read_csv("../../data/cleaned_data/raw_data/directory_info_gis.csv")
 
 df2 <- read_csv(data_names[4]) %>% dplyr::rename(COUNTYCD=GeoFips,YEAR=TimePeriod)
 df2$COUNTYCD <- df2$COUNTYCD %>% as.numeric()

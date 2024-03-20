@@ -1,10 +1,3 @@
-# Setting directory to script location 
-setwd(normalizePath(dirname(rstudioapi::getSourceEditorContext()$path),winslash = "\\"))
-
-# set seed for wild bootstrap 
-dqrng::dqset.seed(2352342)
-set.seed(23325)
-
 source("data-sources.R")
 
 state_df <- tibble(States=state.name,STABBR = state.abb)

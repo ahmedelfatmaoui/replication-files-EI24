@@ -1,13 +1,6 @@
 # Note: the computation of distance between each college and the nearest 
 # treated border may take up to 30 minutes (adjust for parallel computing)
 
-# Setting directory to script location 
-setwd(normalizePath(dirname(rstudioapi::getSourceEditorContext()$path),winslash = "\\"))
-
-# set seed for wild bootstrap 
-dqrng::dqset.seed(2352342)
-set.seed(23325)
-
 source("data-sources.R")
 
   state_df <- tibble(States=state.name, STABBR = state.abb)
@@ -128,7 +121,7 @@ did_reg <- function(df,lh_all,rhs_law){
     model8 <- feols(.[lh_all] ~   .[rhs_law] | UNITID+YEAR, cluster = "STABBR", data =  df%>% filter(!min_dist2<80 ))
     model08 <- boottest(model8,clustid = c("STABBR"),param = rhs_law[1],B = 9999,type = "mammen",bootcluster = c("STABBR","YEAR"),fe ="UNITID")
     fit_cis_90 <- rbind(fit_cis_90 ,confint(model8,level=0.95) %>% data.frame() %>% .[1,])%>% 
-      rename("conf.low_95" = "X2.5..","conf.high_95" = "X97.5..") 
+      dplyr::rename("conf.low_95" = "X2.5..","conf.high_95" = "X97.5..") 
     
     
     ## results for plot
@@ -525,7 +518,7 @@ did_reg <- function(df,lh_all,rhs_law,file_name){
                     , data =  df%>% filter(!min_dist2<80 ))
     model08 = summary(model8, cluster = c('UNITID'))
     fit_cis_90 <- rbind(fit_cis_90 ,confint(model08,level=0.95) %>% data.frame() %>% .[1,])%>% 
-      rename("conf.low_95" = "X2.5..","conf.high_95" = "X97.5..") 
+      dplyr::rename("conf.low_95" = "X2.5..","conf.high_95" = "X97.5..") 
     
     
     ## results for plot
@@ -542,7 +535,7 @@ did_reg <- function(df,lh_all,rhs_law,file_name){
                           fit_cis_90) %>% select(-std.error, 
                                                  -statistic,
                                                  -p.value) %>% 
-      rename(Variable = term, Coefficient = estimate)
+      dplyr::rename(Variable = term, Coefficient = estimate)
     
     results2$miles <- seq(10,80,10)
     
