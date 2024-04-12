@@ -7,7 +7,7 @@ The code in this replication package installs all necessary commands and runs al
 replication-files-rml data![](diagram.png)
 
 
-Figure[ 1 ](#_page0_x72.00_y269.75)illustrates the layout of the replication files. The data folder encompasses two primary subfolders. One folder (source\_data) houses the raw data obtained from [National Center for Education Statistics (2022a) ](#_page8_x47.09_y242.74)or other sources [(Bureau of Labor Statistics, 2021,](#_page8_x47.09_y143.10)[ Bureau of Economic Analysis,](#_page8_x47.09_y103.24) [2021,](#_page8_x47.09_y103.24) [U.S. Census Bureau,](#_page8_x47.09_y362.32) [2021).](#_page8_x47.09_y362.32) The other folder contains the processed data, specificallythe merged IPEDS data.
+Figure[ 1 ](#_page0_x72.00_y269.75)illustrates the layout of the replication files. The data folder encompasses two primary subfolders. One folder (source\_data) houses the raw data obtained from [National Center for Education Statistics (2022a) ](#_page8_x47.09_y242.74)or other sources [(Bureau of Labor Statistics, 2021,](#_page8_x47.09_y143.10)[ Bureau of Economic Analysis,](#_page8_x47.09_y103.24) [2021,](#_page8_x47.09_y103.24) [U.S. Census Bureau,](#_page8_x47.09_y362.32) [2021).](#_page8_x47.09_y362.32) The other folder contains the processed data, specifically the merged IPEDS data.
 
 Similarly, the programs folder, which comprises all the R scripts, includes a subfolder (data\_cleaning) responsible for downloading and cleaning the data. Another subfolder (fig\_tab) within the programs folder executes all analyses. The latter saves figuresand tables in their respective folders located within the last two major folders illustrated in Figure[ 1.](#_page0_x72.00_y269.75)
 
